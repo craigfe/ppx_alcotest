@@ -1,0 +1,14 @@
+let _ppx_alcotest_suite = []
+include
+  struct
+    module Foo =
+      struct
+        let f () = ()
+        let g () = ()
+        let _ppx_alcotest_suite =
+          [Alcotest.test_case "f" `Quick f; Alcotest.test_case "g" `Quick g]
+      end
+    let _ppx_alcotest_suite = ("Foo", Foo._ppx_alcotest_suite) ::
+      _ppx_alcotest_suite
+  end
+let () = Alcotest.run __FILE__ (Stdlib.List.rev _ppx_alcotest_suite)
